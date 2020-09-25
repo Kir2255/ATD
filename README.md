@@ -1,1 +1,1 @@
-# ATD
+# ATD - automation of technological design
