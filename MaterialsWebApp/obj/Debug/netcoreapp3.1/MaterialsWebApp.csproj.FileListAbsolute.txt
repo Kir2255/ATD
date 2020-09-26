@@ -2,7 +2,6 @@ G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\bin\Debug\netcoreapp3.
 G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\bin\Debug\netcoreapp3.1\appsettings.json
 G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\bin\Debug\netcoreapp3.1\MaterialsWebApp.exe
-G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\MaterialsWebApp.csprojAssemblyReference.cache
 G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\MaterialsWebApp.AssemblyInfoInputs.cache
 G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\MaterialsWebApp.AssemblyInfo.cs
 G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\MaterialsWebApp.RazorAssemblyInfo.cache
@@ -154,3 +153,8 @@ G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.
 G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\Razor\Views\Units\Details.cshtml.g.cs
 G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\Razor\Views\Units\Edit.cshtml.g.cs
 G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\Razor\Views\Units\Index.cshtml.g.cs
+G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\Razor\Views\Details\Create.cshtml.g.cs
+G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\Razor\Views\Details\Delete.cshtml.g.cs
+G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\Razor\Views\Details\Details.cshtml.g.cs
+G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\Razor\Views\Details\Edit.cshtml.g.cs
+G:\УЧЕБА\4 курс\АТП\Lab_1\ATD\MaterialsWebApp\obj\Debug\netcoreapp3.1\Razor\Views\Details\Index.cshtml.g.cs

@@ -9,10 +9,10 @@ using static MaterialsWebApp.Models.SortViewModel;
 
 namespace MaterialsWebApp.Controllers
 {
-    public class UnitsController : Controller
+    public class DetailsController : Controller
     {
         private readonly RecordKeepingContext context;
-        public UnitsController(RecordKeepingContext _context)
+        public DetailsController(RecordKeepingContext _context)
         {
             context = _context;
         }
@@ -24,25 +24,25 @@ namespace MaterialsWebApp.Controllers
             int pageSize = 20;
 
 
-            List<Unit> items = context.Units.ToList();
+            List<Detail> items = context.Details.ToList();
             if (!String.IsNullOrEmpty(name))
             {
-                items = items.Where(r => r.Description.Contains(name)).ToList();
+                items = items.Where(r => r.Code.ToString().Contains(name)).ToList();
             }
 
             switch (sortOrder)
             {
                 case Sort.IdAsc:
-                    items = items.OrderBy(r => r.UnitId).ToList();
+                    items = items.OrderBy(r => r.DetailId).ToList();
                     break;
                 case Sort.IdDesc:
-                    items = items.OrderByDescending(r => r.UnitId).ToList();
+                    items = items.OrderByDescending(r => r.DetailId).ToList();
                     break;
-                case Sort.NameAsc:
-                    items = items.OrderBy(r => r.Description).ToList();
+                case Sort.CodeAsc:
+                    items = items.OrderBy(r => r.Code).ToList();
                     break;
-                case Sort.NameDesc:
-                    items = items.OrderByDescending(r => r.Description).ToList();
+                case Sort.CodeDesc:
+                    items = items.OrderByDescending(r => r.Code).ToList();
                     break;
                 default:
                     break;
@@ -55,7 +55,7 @@ namespace MaterialsWebApp.Controllers
             IndexViewModel viewModel = new IndexViewModel
             {
                 PageViewModel = pageViewModel,
-                Units = items,
+                Details = items,
                 SortViewModel = new SortViewModel(sortOrder),
                 FilterViewModel = new FilterViewModel(name)
             };
@@ -65,7 +65,7 @@ namespace MaterialsWebApp.Controllers
 
         public async Task<IActionResult> IncomeSources()
         {
-            return View(await context.Units.ToListAsync());
+            return View(await context.Details.ToListAsync());
         }
 
         // GET: Units/Details/5
@@ -76,8 +76,8 @@ namespace MaterialsWebApp.Controllers
                 return NotFound();
             }
 
-            var source = await context.Units
-                .FirstOrDefaultAsync(m => m.UnitId == id);
+            var source = await context.Details
+                .FirstOrDefaultAsync(m => m.DetailId == id);
             if (source == null)
             {
                 return NotFound();
@@ -95,7 +95,7 @@ namespace MaterialsWebApp.Controllers
         // POST: Units/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UnitId,Description")] Unit source)
+        public async Task<IActionResult> Create([Bind("DetailId,Code")] Detail source)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +115,7 @@ namespace MaterialsWebApp.Controllers
                 return NotFound();
             }
 
-            var call = await context.Units.FindAsync(id);
+            var call = await context.Details.FindAsync(id);
             if (call == null)
             {
                 return NotFound();
@@ -127,9 +127,9 @@ namespace MaterialsWebApp.Controllers
         // POST: ExpenseTypes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UnitId,Description")] Unit source)
+        public async Task<IActionResult> Edit(int id, [Bind("DetailId,Code")] Detail source)
         {
-            if (id != source.UnitId)
+            if (id != source.DetailId)
             {
                 return NotFound();
             }
@@ -143,7 +143,7 @@ namespace MaterialsWebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UnitExists(source.UnitId))
+                    if (!DetailExists(source.DetailId))
                     {
                         return NotFound();
                     }
@@ -166,8 +166,8 @@ namespace MaterialsWebApp.Controllers
                 return NotFound();
             }
 
-            var call = await context.Units
-                .FirstOrDefaultAsync(m => m.UnitId == id);
+            var call = await context.Details
+                .FirstOrDefaultAsync(m => m.DetailId == id);
             if (call == null)
             {
                 return NotFound();
@@ -181,13 +181,13 @@ namespace MaterialsWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var call = await context.Units.FindAsync(id);
-            context.Units.Remove(call);
+            var call = await context.Details.FindAsync(id);
+            context.Details.Remove(call);
             await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UnitExists(int id)
+        private bool DetailExists(int id)
         {
             return context.Units.Any(e => e.UnitId == id);
         }

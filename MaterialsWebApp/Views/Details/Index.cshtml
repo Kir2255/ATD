@@ -1,0 +1,76 @@
+﻿@using MaterialsWebApp.Models;
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label">Name:&nbsp;</label>
+        <input name="name" value="@Model.FilterViewModel.Name" class="form-control" />
+
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.IdSort)">Detail ID</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.CodeSort)">Detail Code</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Details)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DetailId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    <a class="btn btn-primary" role="button" asp-action="Edit" asp-route-id="@item.DetailId">Edit</a> |
+                    <a class="btn btn-primary" role="button" asp-action="Details" asp-route-id="@item.DetailId">Details</a> |
+                    <a class="btn btn-primary" role="button" asp-action="Delete" asp-route-id="@item.DetailId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-sortOrder="@(Model.SortViewModel.CurrentState)"
+       asp-route-name="@(Model.FilterViewModel.Name)"
+       class="btn btn-primary" role="button">
+        &lt; Previous
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-sortOrder="@(Model.SortViewModel.CurrentState)"
+       asp-route-name="@(Model.FilterViewModel.Name)"
+       class="btn btn-primary" role="button">
+        Next &gt;
+    </a>
+}

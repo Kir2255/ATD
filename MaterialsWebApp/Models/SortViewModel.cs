@@ -11,8 +11,8 @@ namespace MaterialsWebApp.Models
         {
             IdSort = sortOrder == Sort.IdAsc ? Sort.IdDesc : Sort.IdAsc;
             NameSort = sortOrder == Sort.NameAsc ? Sort.NameDesc : Sort.NameAsc;
-            /*CommentSort = sortOrder == Sort.CommentAsc ? Sort.CommentDesc : Sort.CommentAsc;
-            AmountSort = sortOrder == Sort.AmountAsc ? Sort.AmountDesc : Sort.AmountAsc;
+            CodeSort = sortOrder == Sort.CodeAsc ? Sort.CodeDesc : Sort.CodeAsc;
+            /*AmountSort = sortOrder == Sort.AmountAsc ? Sort.AmountDesc : Sort.AmountAsc;
             DateSort = sortOrder == Sort.DateAsc ? Sort.DateDesc : Sort.DateAsc;
             AgeSort = sortOrder == Sort.AgeAsc ? Sort.AgeDesc : Sort.AgeAsc;
             SexSort = sortOrder == Sort.SexAsc ? Sort.SexDesc : Sort.SexAsc;
@@ -27,10 +27,10 @@ namespace MaterialsWebApp.Models
             IdAsc,
             IdDesc,
             NameAsc,
-            NameDesc
-            /*CommentAsc,
-            CommentDesc,
-            AmountAsc,
+            NameDesc,
+            CodeAsc,
+            CodeDesc,
+            /*AmountAsc,
             AmountDesc,
             DateAsc,
             DateDesc,
@@ -51,8 +51,8 @@ namespace MaterialsWebApp.Models
 
         public Sort IdSort { get; private set; }
         public Sort NameSort { get; private set; }
-        /*public Sort CommentSort { get; private set; }
-        public Sort AmountSort { get; private set; }
+        public Sort CodeSort { get; private set; }
+        /*public Sort AmountSort { get; private set; }
         public Sort DateSort { get; private set; }
         public Sort AgeSort { get; private set; }
         public Sort SexSort { get; private set; }
