@@ -54,12 +54,13 @@ CREATE TABLE dbo.Components (
 	UnitID INT NOT NULL,
 );
 
-IF OBJECT_ID ('dbo.IncomeExpensiveBook', 'U') IS NOT NULL  
-   DROP TABLE IncomeExpensiveBook;  
+IF OBJECT_ID ('dbo.IncomeExpenseBook', 'U') IS NOT NULL  
+   DROP TABLE IncomeExpenseBook;  
 GO
 -- Create table IncomeExpenseBook
 CREATE TABLE dbo.IncomeExpenseBook (
-    ComponentID INT,
+	RecordID INT PRIMARY KEY IDENTITY(1, 1),
+    ComponentID INT NOT NULL,
 	Income FLOAT DEFAULT NULL,
 	Expense FLOAT DEFAULT NULL
 );
