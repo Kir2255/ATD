@@ -2,22 +2,22 @@ USE master
 GO
 
 -- CREATE DATABASE
-DROP DATABASE IF EXISTS IE_Book
+DROP DATABASE IF EXISTS RecordKeeping
 GO
 
-CREATE DATABASE IE_Book
+CREATE DATABASE RecordKeeping
 GO
 
 
 -- CREATE TABLES
-USE IE_Book
+USE RecordKeeping
 
 IF OBJECT_ID ('dbo.Details', 'U') IS NOT NULL  
    DROP TABLE Details;  
 GO
 -- Create table Details
 CREATE TABLE dbo.Details (
-    Id   INT PRIMARY KEY IDENTITY(1, 1),
+    DetailID   INT PRIMARY KEY IDENTITY(1, 1),
     Code INT NOT NULL,
 );
 
@@ -27,7 +27,7 @@ IF OBJECT_ID ('dbo.Materials', 'U') IS NOT NULL
 GO
 -- Create table Materials
 CREATE TABLE dbo.Materials (
-    Id   INT PRIMARY KEY IDENTITY(1, 1),
+    MaterialID   INT PRIMARY KEY IDENTITY(1, 1),
     Code INT NOT NULL,
 	Name VARCHAR(255) NOT NULL
 );
@@ -38,7 +38,7 @@ IF OBJECT_ID ('dbo.Units', 'U') IS NOT NULL
 GO
 -- Create table Units
 CREATE TABLE dbo.Units (
-    Id   INT PRIMARY KEY IDENTITY(1, 1),
+    UnitID   INT PRIMARY KEY IDENTITY(1, 1),
     Description VARCHAR(255) NOT NULL
 );
 
@@ -48,43 +48,43 @@ IF OBJECT_ID ('dbo.Components', 'U') IS NOT NULL
 GO
 -- Create table Components
 CREATE TABLE dbo.Components (
-    Id INT PRIMARY KEY IDENTITY(1, 1),
-    DetailId INT NOT NULL,
-	MaterialId INT NOT NULL,
-	UnitId INT NOT NULL,
+    ComponentID INT PRIMARY KEY IDENTITY(1, 1),
+    DetailID INT NOT NULL,
+	MaterialID INT NOT NULL,
+	UnitID INT NOT NULL,
 );
 
 IF OBJECT_ID ('dbo.IncomeExpensiveBook', 'U') IS NOT NULL  
    DROP TABLE IncomeExpensiveBook;  
 GO
--- Create table IncomeExpensiveBook
-CREATE TABLE dbo.IncomeExpensiveBook (
-    ComponentId INT,
+-- Create table IncomeExpenseBook
+CREATE TABLE dbo.IncomeExpenseBook (
+    ComponentID INT,
 	Income FLOAT DEFAULT NULL,
-	Expensive FLOAT DEFAULT NULL
+	Expense FLOAT DEFAULT NULL
 );
 
 -- Make references between different tables
 GO
-ALTER TABLE [dbo].[Components]  WITH CHECK ADD CONSTRAINT [FK_Components_Details] FOREIGN KEY([DetailId])
-REFERENCES [dbo].[Details] ([Id])
+ALTER TABLE [dbo].[Components]  WITH CHECK ADD CONSTRAINT [FK_Components_Details] FOREIGN KEY([DetailID])
+REFERENCES [dbo].[Details] ([DetailID])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 
 GO
-ALTER TABLE [dbo].[Components]  WITH CHECK ADD CONSTRAINT [FK_Components_Materials] FOREIGN KEY([MaterialId])
-REFERENCES [dbo].[Materials] ([Id])
+ALTER TABLE [dbo].[Components]  WITH CHECK ADD CONSTRAINT [FK_Components_Materials] FOREIGN KEY([MaterialID])
+REFERENCES [dbo].[Materials] ([MaterialID])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 
 GO
-ALTER TABLE [dbo].[Components]  WITH CHECK ADD CONSTRAINT [FK_Components_Units] FOREIGN KEY([UnitId])
-REFERENCES [dbo].[Units] ([Id])
+ALTER TABLE [dbo].[Components]  WITH CHECK ADD CONSTRAINT [FK_Components_Units] FOREIGN KEY([UnitID])
+REFERENCES [dbo].[Units] ([UnitID])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 
 GO
-ALTER TABLE [dbo].[IncomeExpensiveBook]  WITH CHECK ADD CONSTRAINT [FK_IncomeExpensiveBook_Components] FOREIGN KEY([ComponentId])
-REFERENCES [dbo].[Components] ([Id])
+ALTER TABLE [dbo].[IncomeExpenseBook]  WITH CHECK ADD CONSTRAINT [FK_IncomeExpenseBook_Components] FOREIGN KEY([ComponentID])
+REFERENCES [dbo].[Components] ([ComponentID])
 ON UPDATE CASCADE
 ON DELETE CASCADE
