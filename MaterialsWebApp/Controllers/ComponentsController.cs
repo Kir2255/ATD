@@ -4,15 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using MaterialsWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using static MaterialsWebApp.Models.SortViewModel;
 
 namespace MaterialsWebApp.Controllers
 {
-    public class DetailsController : Controller
+    public class ComponentsController : Controller
     {
         private readonly RecordKeepingContext context;
-        public DetailsController(RecordKeepingContext _context)
+        public ComponentsController(RecordKeepingContext _context)
         {
             context = _context;
         }
@@ -24,25 +25,37 @@ namespace MaterialsWebApp.Controllers
             int pageSize = 20;
 
 
-            List<Detail> items = context.Details.ToList();
+            List<Component> items = context.Components.Include(r => r.Detail).Include(r => r.Material).Include(r => r.Unit).ToList();
             if (!String.IsNullOrEmpty(name))
             {
-                items = items.Where(r => r.Code.ToString().Contains(name)).ToList();
+                items = items.Where(r => r.Material.Name.Contains(name)).ToList();
             }
 
             switch (sortOrder)
             {
                 case Sort.IdAsc:
-                    items = items.OrderBy(r => r.DetailId).ToList();
+                    items = items.OrderBy(r => r.ComponentId).ToList();
                     break;
                 case Sort.IdDesc:
-                    items = items.OrderByDescending(r => r.DetailId).ToList();
+                    items = items.OrderByDescending(r => r.ComponentId).ToList();
                     break;
                 case Sort.CodeAsc:
-                    items = items.OrderBy(r => r.Code).ToList();
+                    items = items.OrderBy(r => r.Detail.Code).ToList();
                     break;
                 case Sort.CodeDesc:
-                    items = items.OrderByDescending(r => r.Code).ToList();
+                    items = items.OrderByDescending(r => r.Detail.Code).ToList();
+                    break;
+                case Sort.NameAsc:
+                    items = items.OrderBy(r => r.Material.Name).ToList();
+                    break;
+                case Sort.NameDesc:
+                    items = items.OrderByDescending(r => r.Material.Name).ToList();
+                    break;
+                case Sort.UnitAsc:
+                    items = items.OrderBy(r => r.Unit.Description).ToList();
+                    break;
+                case Sort.UnitDesc:
+                    items = items.OrderByDescending(r => r.Unit.Description).ToList();
                     break;
                 default:
                     break;
@@ -55,7 +68,7 @@ namespace MaterialsWebApp.Controllers
             IndexViewModel viewModel = new IndexViewModel
             {
                 PageViewModel = pageViewModel,
-                Details = items,
+                Components = items,
                 SortViewModel = new SortViewModel(sortOrder),
                 FilterViewModel = new FilterViewModel(name)
             };
@@ -65,7 +78,7 @@ namespace MaterialsWebApp.Controllers
 
         public async Task<IActionResult> IncomeSources()
         {
-            return View(await context.Details.ToListAsync());
+            return View(await context.Components.ToListAsync());
         }
 
         // GET: Units/Details/5
@@ -76,8 +89,8 @@ namespace MaterialsWebApp.Controllers
                 return NotFound();
             }
 
-            var source = await context.Details
-                .FirstOrDefaultAsync(m => m.DetailId == id);
+            var source = await context.Components.Include(r => r.Detail).Include(r => r.Material).Include(r => r.Unit)
+                .FirstOrDefaultAsync(m => m.ComponentId == id);
             if (source == null)
             {
                 return NotFound();
@@ -89,13 +102,16 @@ namespace MaterialsWebApp.Controllers
         // GET: Units/Create
         public IActionResult Create()
         {
+            ViewData["DetailId"] = new SelectList(context.Details, "DetailId", "Code");
+            ViewData["MaterialId"] = new SelectList(context.Materials, "MaterialId", "Name");
+            ViewData["UnitId"] = new SelectList(context.Units, "UnitId", "Description");
             return View();
         }
 
         // POST: Units/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DetailId,Code")] Detail source)
+        public async Task<IActionResult> Create([Bind("ComponentId,DetailId,MaterialId,UnitId")] Component source)
         {
             if (ModelState.IsValid)
             {
@@ -104,6 +120,9 @@ namespace MaterialsWebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewData["DetailId"] = new SelectList(context.Details, "DetailId", "Code", source.DetailId);
+            ViewData["MaterialId"] = new SelectList(context.Materials, "MaterialId", "Name", source.MaterialId);
+            ViewData["UnitId"] = new SelectList(context.Units, "UnitId", "Description", source.UnitId);
             return View(source);
         }
 
@@ -115,21 +134,24 @@ namespace MaterialsWebApp.Controllers
                 return NotFound();
             }
 
-            var call = await context.Details.FindAsync(id);
+            var call = await context.Components.FindAsync(id);
             if (call == null)
             {
                 return NotFound();
             }
 
+            ViewData["DetailId"] = new SelectList(context.Details, "DetailId", "Code", call.DetailId);
+            ViewData["MaterialId"] = new SelectList(context.Materials, "MaterialId", "Name", call.MaterialId);
+            ViewData["UnitId"] = new SelectList(context.Units, "UnitId", "Description", call.UnitId);
             return View(call);
         }
 
         // POST: ExpenseTypes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DetailId,Code")] Detail source)
+        public async Task<IActionResult> Edit(int id, [Bind("ComponentId,DetailId,MaterialId,UnitId")] Component source)
         {
-            if (id != source.DetailId)
+            if (id != source.ComponentId)
             {
                 return NotFound();
             }
@@ -143,7 +165,7 @@ namespace MaterialsWebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DetailExists(source.DetailId))
+                    if (!ComponentExists(source.ComponentId))
                     {
                         return NotFound();
                     }
@@ -155,6 +177,9 @@ namespace MaterialsWebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewData["DetailId"] = new SelectList(context.Details, "DetailId", "Code", source.DetailId);
+            ViewData["MaterialId"] = new SelectList(context.Materials, "MaterialId", "Name", source.MaterialId);
+            ViewData["UnitId"] = new SelectList(context.Units, "UnitId", "Description", source.UnitId);
             return View(source);
         }
 
@@ -166,8 +191,8 @@ namespace MaterialsWebApp.Controllers
                 return NotFound();
             }
 
-            var call = await context.Details
-                .FirstOrDefaultAsync(m => m.DetailId == id);
+            var call = await context.Components.Include(r => r.Detail).Include(r => r.Material).Include(r => r.Unit)
+                .FirstOrDefaultAsync(m => m.ComponentId == id);
             if (call == null)
             {
                 return NotFound();
@@ -181,15 +206,15 @@ namespace MaterialsWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var call = await context.Details.FindAsync(id);
-            context.Details.Remove(call);
+            var call = await context.Components.FindAsync(id);
+            context.Components.Remove(call);
             await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DetailExists(int id)
+        private bool ComponentExists(int id)
         {
-            return context.Details.Any(e => e.DetailId == id);
+            return context.Components.Any(e => e.ComponentId == id);
         }
     }
 }

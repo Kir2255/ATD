@@ -9,10 +9,10 @@ using static MaterialsWebApp.Models.SortViewModel;
 
 namespace MaterialsWebApp.Controllers
 {
-    public class DetailsController : Controller
+    public class MaterialsController : Controller
     {
         private readonly RecordKeepingContext context;
-        public DetailsController(RecordKeepingContext _context)
+        public MaterialsController(RecordKeepingContext _context)
         {
             context = _context;
         }
@@ -24,25 +24,31 @@ namespace MaterialsWebApp.Controllers
             int pageSize = 20;
 
 
-            List<Detail> items = context.Details.ToList();
+            List<Material> items = context.Materials.ToList();
             if (!String.IsNullOrEmpty(name))
             {
-                items = items.Where(r => r.Code.ToString().Contains(name)).ToList();
+                items = items.Where(r => r.Name.Contains(name)).ToList();
             }
 
             switch (sortOrder)
             {
                 case Sort.IdAsc:
-                    items = items.OrderBy(r => r.DetailId).ToList();
+                    items = items.OrderBy(r => r.MaterialId).ToList();
                     break;
                 case Sort.IdDesc:
-                    items = items.OrderByDescending(r => r.DetailId).ToList();
+                    items = items.OrderByDescending(r => r.MaterialId).ToList();
                     break;
                 case Sort.CodeAsc:
                     items = items.OrderBy(r => r.Code).ToList();
                     break;
                 case Sort.CodeDesc:
                     items = items.OrderByDescending(r => r.Code).ToList();
+                    break;
+                case Sort.NameAsc:
+                    items = items.OrderBy(r => r.Name).ToList();
+                    break;
+                case Sort.NameDesc:
+                    items = items.OrderByDescending(r => r.Name).ToList();
                     break;
                 default:
                     break;
@@ -55,7 +61,7 @@ namespace MaterialsWebApp.Controllers
             IndexViewModel viewModel = new IndexViewModel
             {
                 PageViewModel = pageViewModel,
-                Details = items,
+                Materials = items,
                 SortViewModel = new SortViewModel(sortOrder),
                 FilterViewModel = new FilterViewModel(name)
             };
@@ -65,7 +71,7 @@ namespace MaterialsWebApp.Controllers
 
         public async Task<IActionResult> IncomeSources()
         {
-            return View(await context.Details.ToListAsync());
+            return View(await context.Materials.ToListAsync());
         }
 
         // GET: Units/Details/5
@@ -76,8 +82,8 @@ namespace MaterialsWebApp.Controllers
                 return NotFound();
             }
 
-            var source = await context.Details
-                .FirstOrDefaultAsync(m => m.DetailId == id);
+            var source = await context.Materials
+                .FirstOrDefaultAsync(m => m.MaterialId == id);
             if (source == null)
             {
                 return NotFound();
@@ -95,7 +101,7 @@ namespace MaterialsWebApp.Controllers
         // POST: Units/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DetailId,Code")] Detail source)
+        public async Task<IActionResult> Create([Bind("MaterialId,Code,Name")] Material source)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +121,7 @@ namespace MaterialsWebApp.Controllers
                 return NotFound();
             }
 
-            var call = await context.Details.FindAsync(id);
+            var call = await context.Materials.FindAsync(id);
             if (call == null)
             {
                 return NotFound();
@@ -127,9 +133,9 @@ namespace MaterialsWebApp.Controllers
         // POST: ExpenseTypes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DetailId,Code")] Detail source)
+        public async Task<IActionResult> Edit(int id, [Bind("MaterialId,Code,Name")] Material source)
         {
-            if (id != source.DetailId)
+            if (id != source.MaterialId)
             {
                 return NotFound();
             }
@@ -143,7 +149,7 @@ namespace MaterialsWebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DetailExists(source.DetailId))
+                    if (!MaterialExists(source.MaterialId))
                     {
                         return NotFound();
                     }
@@ -166,8 +172,8 @@ namespace MaterialsWebApp.Controllers
                 return NotFound();
             }
 
-            var call = await context.Details
-                .FirstOrDefaultAsync(m => m.DetailId == id);
+            var call = await context.Materials
+                .FirstOrDefaultAsync(m => m.MaterialId == id);
             if (call == null)
             {
                 return NotFound();
@@ -181,15 +187,15 @@ namespace MaterialsWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var call = await context.Details.FindAsync(id);
-            context.Details.Remove(call);
+            var call = await context.Materials.FindAsync(id);
+            context.Materials.Remove(call);
             await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DetailExists(int id)
+        private bool MaterialExists(int id)
         {
-            return context.Details.Any(e => e.DetailId == id);
+            return context.Materials.Any(e => e.MaterialId == id);
         }
     }
 }

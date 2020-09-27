@@ -21,15 +21,6 @@ namespace MaterialsWebApp.Models
         public virtual DbSet<Material> Materials { get; set; }
         public virtual DbSet<Unit> Units { get; set; }
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=RecordKeeping;Trusted_Connection=True;");
-            }
-        }*/
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Component>(entity =>

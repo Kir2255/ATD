@@ -12,9 +12,11 @@ namespace MaterialsWebApp.Models
         [Display(Name = "Component")]
         public int ComponentId { get; set; }
         [Required]
+        [Range(0, 99999999999)]
         [Display(Name = "Income")]
         public double? Income { get; set; }
         [Required]
+        [Range(0, 99999999999)]
         [Display(Name = "Expense")]
         public double? Expense { get; set; }
 

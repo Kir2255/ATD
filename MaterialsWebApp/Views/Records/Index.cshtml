@@ -1,0 +1,120 @@
+﻿@using MaterialsWebApp.Models;
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label">Material:&nbsp;</label>
+        <input name="name" value="@Model.FilterViewModel.Name" class="form-control" />
+
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+</form>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.IdSort)">Record ID</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.CodeSort)">Detail Code</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.MCodeSort)">Material Code</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.NameSort)">Material</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.ExpenseSort)">Expense</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.UnitSort)">Unit</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.IncomeSort)">Income</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.UnitSort)">Unit</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.IncomeExpenseBooks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Component.Detail.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Component.Material.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Component.Material.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Income)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Component.Unit.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Expense)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Component.Unit.Description)
+                </td>
+                <td>
+                    <a class="btn btn-primary" role="button" asp-action="Edit" asp-route-id="@item.RecordId">Edit</a> |
+                    <a class="btn btn-primary" role="button" asp-action="Details" asp-route-id="@item.RecordId">Details</a> |
+                    <a class="btn btn-primary" role="button" asp-action="Delete" asp-route-id="@item.RecordId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-sortOrder="@(Model.SortViewModel.CurrentState)"
+       asp-route-name="@(Model.FilterViewModel.Name)"
+       class="btn btn-primary" role="button">
+        &lt; Previous
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-sortOrder="@(Model.SortViewModel.CurrentState)"
+       asp-route-name="@(Model.FilterViewModel.Name)"
+       class="btn btn-primary" role="button">
+        Next &gt;
+    </a>
+}

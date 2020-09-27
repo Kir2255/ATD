@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Materials</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -14,7 +14,7 @@
 
 <form method="get">
     <div class="form-inline form-group">
-        <label class="control-label">Code:&nbsp;</label>
+        <label class="control-label">Material:&nbsp;</label>
         <input name="name" value="@Model.FilterViewModel.Name" class="form-control" />
 
         <input type="submit" value="Search" class="btn btn-primary" />
@@ -26,31 +26,38 @@
         <tr>
             <th>
                 <a asp-action="Index"
-                   asp-route-sortOrder="@(Model.SortViewModel.IdSort)">Detail ID</a>
+                   asp-route-sortOrder="@(Model.SortViewModel.IdSort)">Material ID</a>
             </th>
             <th>
                 <a asp-action="Index"
-                   asp-route-sortOrder="@(Model.SortViewModel.CodeSort)">Detail Code</a>
+                   asp-route-sortOrder="@(Model.SortViewModel.CodeSort)">Material Code</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.NameSort)">Material</a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Details)
+        @foreach (var item in Model.Materials)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DetailId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    <a class="btn btn-primary" role="button" asp-action="Edit" asp-route-id="@item.DetailId">Edit</a> |
-                    <a class="btn btn-primary" role="button" asp-action="Details" asp-route-id="@item.DetailId">Details</a> |
-                    <a class="btn btn-primary" role="button" asp-action="Delete" asp-route-id="@item.DetailId">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaterialId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a class="btn btn-primary" role="button" asp-action="Edit" asp-route-id="@item.MaterialId">Edit</a> |
+                <a class="btn btn-primary" role="button" asp-action="Details" asp-route-id="@item.MaterialId">Details</a> |
+                <a class="btn btn-primary" role="button" asp-action="Delete" asp-route-id="@item.MaterialId">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
