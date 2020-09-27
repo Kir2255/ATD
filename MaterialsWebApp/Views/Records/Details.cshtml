@@ -1,0 +1,61 @@
+﻿@model MaterialsWebApp.Models.IncomeExpenseBook
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Record</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Component.Detail.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Component.Detail.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Component.Material.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Component.Material.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Component.Material.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Component.Material.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Income)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Income)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Component.Unit.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Component.Unit.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Expense)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Expense)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Component.Unit.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Component.Unit.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RecordId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
